@@ -34,14 +34,14 @@ jobs:
           username: ${{ secrets.REGISTRY_USER }}
           password: ${{ secrets.REGISTRY_TOKEN }}
 
-      - name: Build and push Docker images
+      - name: Build and Push
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: docker.io/${{ secrets.REGISTRY_USER }}/example-application:${{ env.TAG_NAME }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          build-args: |
+            APP_VERSION=${{ env.TAG_NAME }}
 
   trigger-deployment-update:
     runs-on: ubuntu-latest
